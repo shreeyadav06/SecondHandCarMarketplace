@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Maintenance Records | Car Market Place</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(135deg, rgba(6, 10, 11, 0.75) 0%, rgba(8, 16, 21, 0.85) 100%),
+                url('images/bmw.jpg') no-repeat center center fixed;
+            background-size: cover;
+            opacity: 0.55;
+        }
+        .records-container {
+            background: rgba(255,255,255,0.97);
+            padding: 2.5rem 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25);
+            width: 600px;
+            max-width: 98vw;
+            animation: fadeIn 1s;
+            position: relative;
+            z-index: 1;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #2980b9;
+            letter-spacing: 1px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        th, td {
+            padding: 0.7rem;
+            border-bottom: 1px solid #e3e3e3;
+            text-align: left;
+        }
+        th {
+            background: #f8fafc;
+            color: #2461c6;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .no-records {
+            text-align: center;
+            color: #c0392b;
+            font-weight: 500;
+            margin-top: 2rem;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 0.7rem 1.5rem;
+            background: linear-gradient(90deg, #2980b9 60%, #6dd5fa 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-overlay"></div>
+    <div class="records-container">
+        <a href="viewcar.html" class="back-btn">&larr; Back to Cars</a>
+        <h2>Maintenance Records</h2>
+        <div id="records-table"></div>
+    </div>
+    <script>
+        // Get car_id from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const carId = urlParams.get('car_id');
+        const recordsTable = document.getElementById('records-table');
+
+        if (!carId) {
+            recordsTable.innerHTML = '<div class="no-records">No Car ID provided.</div>';
+        } else {
+            fetch(`backend/view_maintenance.php?car_id=${carId}`)
+                .then(res => res.json())
+                .then(records => {
+                    if (!records.length) {
+                        recordsTable.innerHTML = '<div class="no-records">No maintenance records found for this car.</div>';
+                        return;
+                    }
+                    let table = `<table>
+                        <tr>
+                            <th>Service Date</th>
+                            <th>Description</th>
+                            <th>Cost</th>
+                            <th>Mechanic Name</th>
+                            <th>Service Bill</th>
+                            <th>Car Registration</th>
+                        </tr>`;
+                    records.forEach(r => {
+                        table += `<tr>
+                            <td>${r.ServiceDate}</td>
+                            <td>${r.Description}</td>
+                            <td>₹${r.Cost}</td>
+                            <td>${r.MechanicName}</td>
+                            <td>${r.ServiceBill ? `<a href="uploads/maintenance/${r.ServiceBill}" target="_blank">View</a>` : 'N/A'}</td>
+                            <td>${r.CarRegistration ? `<a href="uploads/maintenance/${r.CarRegistration}" target="_blank">View</a>` : 'N/A'}</td>
+                        </tr>`;
+                    });
+                    table += '</table>';
+                    recordsTable.innerHTML = table;
+                })
+                .catch(() => {
+                    recordsTable.innerHTML = '<div class="no-records">Failed to load records.</div>';
+                });
+        }
+    </script>
+</body>
+</html>

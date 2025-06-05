@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register | Car Market Place</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: linear-gradient(120deg, #6dd5fa, #2980b9, #ffffff);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .register-container {
+            background: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            width: 350px;
+            max-width: 90vw;
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .register-container h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #2980b9;
+        }
+        .register-options {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .register-option-btn {
+            flex: 1;
+            padding: 0.7rem 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: #f4f4f4;
+            color: #2461c6;
+            transition: background 0.2s, color 0.2s;
+        }
+        .register-option-btn.active, .register-option-btn:hover {
+            background: #2461c6;
+            color: #fff;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: #333;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #b2bec3;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border 0.2s, box-shadow 0.2s;
+            background: #f8fafc;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #2980b9;
+            box-shadow: 0 0 0 2px #6dd5fa55;
+            outline: none;
+        }
+        .register-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(90deg, #2980b9 60%, #6dd5fa 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(41,128,185,0.10);
+            transition: background 0.2s, transform 0.1s;
+        }
+        .register-btn:hover {
+            background: linear-gradient(90deg, #2574a9 60%, #51c6f7 100%);
+            transform: translateY(-2px) scale(1.02);
+        }
+        .login-link {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: #2980b9;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .login-link:hover {
+            text-decoration: underline;
+        }
+        small {
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+<script>
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('error')) {
+        let msg = '';
+        switch(params.get('error')) {
+            case 'emptyfields': msg = 'Please fill in all fields.'; break;
+            case 'exists': msg = 'Username/email already exists.'; break;
+            case 'weakpass': msg = 'Password must be at least 6 characters.'; break;
+            case 'failed': msg = 'Registration failed. Please try again.'; break;
+            default: msg = 'Registration error. Please try again.';
+        }
+        alert(msg);
+    }
+</script>
+    <div class="register-container">
+        <h2>Register</h2>
+        <div class="register-options">
+            <button type="button" class="register-option-btn active" id="adminRegBtn" onclick="showAdminRegister()">Admin</button>
+            <button type="button" class="register-option-btn" id="userRegBtn" onclick="showUserRegister()">Buyer/Seller</button>
+        </div>
+        <!-- Admin Register Form -->
+        <form action="backend/register.php" method="POST" id="adminRegisterForm">
+            <div class="form-group">
+                <label for="admin_username">Username or Email</label>
+                <input type="text" id="admin_username" name="username" required autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label for="admin_password">Password</label>
+                <input 
+                    type="password" 
+                    id="admin_password" 
+                    name="password" 
+                    required 
+                    autocomplete="current-password"
+                    pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-=\[\]{};':\\|,.<>\/?]).{6,}$"
+                    title="Password must be at least 6 characters, must include one uppercase letter, one number, and one special character."
+                >
+                <small>
+                    Password must be at least 6 characters, include one uppercase letter, one number, and one special character.
+                </small>
+            </div>
+            <input type="hidden" name="role" value="admin">
+            <button type="submit" class="register-btn">Register as Admin</button>
+        </form>
+        <!-- Buyer/Seller Register Form -->
+        <form action="backend/register.php" method="POST" id="userRegisterForm" style="display:none;">
+            <div class="form-group">
+                <label for="user_username">Username or Email</label>
+                <input type="text" id="user_username" name="username" required autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label for="user_password">Password</label>
+                <input 
+                    type="password" 
+                    id="user_password" 
+                    name="password" 
+                    required 
+                    autocomplete="current-password"
+                    pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-=\[\]{};':\\|,.<>\/?]).{6,}$"
+                    title="Password must be at least 6 characters, must include one uppercase letter, one number, and one special character."
+                >
+                <small>
+                    Password must be at least 6 characters, include one uppercase letter, one number, and one special character.
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="user_role">Register as</label>
+                <select id="user_role" name="role" required>
+                    <option value="">Select Role</option>
+                    <option value="seller">Seller</option>
+                    <option value="customer">Buyer</option>
+                </select>
+            </div>
+            <button type="submit" class="register-btn">Register as Buyer/Seller</button>
+        </form>
+        <a href="login.html" class="login-link">Already have an account? Login</a>
+    </div>
+    <script>
+        function showAdminRegister() {
+            document.getElementById('adminRegisterForm').style.display = 'block';
+            document.getElementById('userRegisterForm').style.display = 'none';
+            document.getElementById('adminRegBtn').classList.add('active');
+            document.getElementById('userRegBtn').classList.remove('active');
+        }
+        function showUserRegister() {
+            document.getElementById('adminRegisterForm').style.display = 'none';
+            document.getElementById('userRegisterForm').style.display = 'block';
+            document.getElementById('adminRegBtn').classList.remove('active');
+            document.getElementById('userRegBtn').classList.add('active');
+        }
+    </script>
+</body>
+</html>

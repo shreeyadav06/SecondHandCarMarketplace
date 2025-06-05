@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Sellers | Car Market Place</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+            padding: 2rem 1.5rem 2.5rem 1.5rem;
+        }
+        h2 {
+            color: #2461c6;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.2rem;
+        }
+        th, td {
+            padding: 0.85rem 0.7rem;
+            border-bottom: 1px solid #eaeaea;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background: #2461c6;
+            color: #fff;
+            font-weight: 600;
+        }
+        tr:hover {
+            background: #f1f7ff;
+        }
+        .car-list {
+            margin: 0.3rem 0 0.3rem 0.5rem;
+            padding-left: 1rem;
+            color: #222;
+        }
+        .car-list li {
+            margin-bottom: 0.2rem;
+        }
+        .no-cars {
+            color: #888;
+            font-style: italic;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 1.5rem;
+            background: #2461c6;
+            color: #fff;
+            padding: 0.7rem 1.7rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .back-btn:hover {
+            background: #174a8c;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 1rem 0.2rem; }
+            th, td { padding: 0.6rem 0.3rem; font-size: 0.98rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>All Sellers</h2>
+        <table id="sellers-table">
+            <thead>
+                <tr>
+                    <th>Seller ID</th>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Address</th>
+                    <th>Cars Listed</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Sellers will be loaded here -->
+            </tbody>
+        </table>
+        <a href="customer_dashboard.html" class="back-btn">Back to Dashboard</a>
+    </div>
+    <script>
+        // Fetch sellers and their cars
+        Promise.all([
+            fetch('backend/view_sellers.php').then(res => res.json()),
+            fetch('backend/view_cars.php').then(res => res.json())
+        ]).then(([sellers, cars]) => {
+            const tbody = document.querySelector('#sellers-table tbody');
+            if (!sellers.length) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#888;">No sellers found.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = sellers.map(seller => {
+                // Filter cars for this seller
+                const sellerCars = cars.filter(car => car.SellerID == seller.SellerID);
+                let carsHtml = '';
+                if (sellerCars.length) {
+                    carsHtml = `<ul class="car-list">` + sellerCars.map(car =>
+                        `<li>${car.Brand || ''} ${car.Model || ''} (${car.Year || ''})</li>`
+                    ).join('') + `</ul>`;
+                } else {
+                    carsHtml = `<span class="no-cars">No cars listed</span>`;
+                }
+                return `
+                    <tr>
+                        <td>${seller.SellerID}</td>
+                        <td>${seller.Name}</td>
+                        <td>${seller.Contact}</td>
+                        <td>${seller.Address}</td>
+                        <td>${carsHtml}</td>
+                    </tr>
+                `;
+            }).join('');
+        }).catch(() => {
+            document.querySelector('#sellers-table tbody').innerHTML =
+                '<tr><td colspan="5" style="text-align:center;color:#e74c3c;">Failed to load sellers or cars.</td></tr>';
+        });
+    </script>
+</body>
+</html>

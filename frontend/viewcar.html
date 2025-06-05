@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Car Listings | SecondGear</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: #f4f4f4;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+        }
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem 3vw;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: #222;
+            letter-spacing: 2px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+            padding: 2rem;
+        }
+        h2 {
+            color: #2461c6;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .car-listings {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+        .car-card {
+            background: #f8fafc;
+            border-radius: 1.2rem;
+            box-shadow: 0 2px 12px rgba(41,128,185,0.08);
+            width: 300px;
+            padding: 1.2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            border: 1px solid #e3e3e3;
+        }
+        .car-card h3 {
+            margin: 0 0 0.5rem 0;
+            color: #2461c6;
+            font-size: 1.3rem;
+        }
+        .car-card .car-info {
+            color: #222;
+            font-size: 1.05rem;
+            margin-bottom: 0.5rem;
+        }
+        .car-card .car-price {
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        @media (max-width: 700px) {
+            .container { padding: 1rem 0.2rem; }
+            .car-listings { gap: 1rem; }
+            .car-card { width: 95vw; }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">SecondGear</div>
+        <a href="index.html" style="color:#2461c6; text-decoration:none; font-weight:600;">Home</a>
+    </div>
+    <div class="container">
+        <h2>All Car Listings</h2>
+        <!-- Car Type and Price Range Filter -->
+        <div style="margin-bottom: 2rem; display: flex; gap: 1rem; justify-content: center; align-items: center; flex-wrap:wrap;">
+            <label for="carType" style="font-weight:500;">Car Type:</label>
+            <select id="carType" style="padding:0.4rem;">
+                <option value="">All</option>
+                <option value="Sedan">Sedan</option>
+                <option value="SUV">SUV</option>
+                <option value="Hatchback">Hatchback</option>
+                <option value="Coupe">Coupe</option>
+                <option value="Convertible">Convertible</option>
+                <option value="Pickup">Pickup</option>
+                <option value="Van">Van</option>
+                <option value="Wagon">Wagon</option>
+                <option value="Other">Other</option>
+            </select>
+            <label for="minPrice" style="font-weight:500;">Min Price:</label>
+            <input type="number" id="minPrice" placeholder="0" style="width:100px; padding:0.4rem;">
+            <label for="maxPrice" style="font-weight:500;">Max Price:</label>
+            <input type="number" id="maxPrice" placeholder="1000000" style="width:100px; padding:0.4rem;">
+            <button id="filterBtn" style="padding:0.4rem 1rem; background:#2461c6; color:#fff; border:none; border-radius:0.5rem; font-weight:600; cursor:pointer;">Filter</button>
+            <button id="resetBtn" style="padding:0.4rem 1rem; background:#e3e3e3; color:#2461c6; border:none; border-radius:0.5rem; font-weight:600; cursor:pointer;">Reset</button>
+        </div>
+        <div class="car-listings" id="car-listings">
+            <!-- Car cards will be injected here -->
+        </div>
+    </div>
+    <script>
+        let allCars = [];
+
+        function renderCars(cars) {
+            const container = document.getElementById('car-listings');
+            container.innerHTML = '';
+            if (!cars.length) {
+                container.innerHTML = "<p>No cars found for selected filters.</p>";
+                return;
+            }
+            cars.forEach(car => {
+                const card = document.createElement('div');
+                card.className = 'car-card';
+                const imgSrc = car.CarImage && car.CarImage !== "" 
+                    ? `images/${car.CarImage}` 
+                    : 'images/no-image.png';
+                card.innerHTML = `
+                    <img src="${imgSrc}" alt="Car Image" style="width:100%;height:180px;object-fit:cover;border-radius:0.8rem;margin-bottom:0.7rem;">
+                    <h3>${car.Brand} ${car.Model}</h3>
+                    <div class="car-info">Type: <b>${car.CarType}</b></div>
+                    <div class="car-info">Year: ${car.Year}</div>
+                    <div class="car-info">Condition: ${car.CarCondition}</div>
+                    <div class="car-info">Mileage: ${car.Mileage} km</div>
+                    <div class="car-info">Horsepower: ${car.Horsepower ? car.Horsepower : 'N/A'} hp</div>
+                    <div class="car-info">Transmission: ${car.Transmission}</div>
+                    <div class="car-price">Price: ₹${car.Price}</div>
+                    <div class="car-info">Status: ${car.Status}</div>
+                    <div class="car-info">Car ID: ${car.CarID}</div>
+                    <button class="buy-btn" onclick="window.location.href='booking.html?car_id=${car.CarID}'" style="margin-top:0.7rem;width:100%;padding:0.7rem 0;background:#2461c6;color:#fff;border:none;border-radius:0.7rem;font-size:1rem;font-weight:600;cursor:pointer;">Buy</button>
+                    <button class="records-btn" onclick="window.location.href='view_maintenance.html?car_id=${car.CarID}'" style="margin-top:0.5rem;width:100%;padding:0.7rem 0;background:#e67e22;color:#fff;border:none;border-radius:0.7rem;font-size:1rem;font-weight:600;cursor:pointer;">Check Records</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Fetch all cars on load
+        fetch('backend/view_cars.php')
+            .then(res => res.json())
+            .then(cars => {
+                allCars = cars;
+                renderCars(allCars);
+            })
+            .catch(() => {
+                document.getElementById('car-listings').innerHTML = "<p>Failed to load car listings.</p>";
+            });
+
+        // Filter functionality
+        document.getElementById('filterBtn').onclick = function() {
+            const min = parseFloat(document.getElementById('minPrice').value) || 0;
+            const max = parseFloat(document.getElementById('maxPrice').value) || Number.MAX_SAFE_INTEGER;
+            const type = document.getElementById('carType').value;
+            const filtered = allCars.filter(car =>
+                Number(car.Price) >= min &&
+                Number(car.Price) <= max &&
+                (type === "" || car.CarType === type)
+            );
+            renderCars(filtered);
+        };
+
+        // Reset filter
+        document.getElementById('resetBtn').onclick = function() {
+            document.getElementById('minPrice').value = '';
+            document.getElementById('maxPrice').value = '';
+            document.getElementById('carType').value = '';
+            renderCars(allCars);
+        };
+    </script>
+</body>
+</html>
+
