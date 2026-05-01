@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Dashboard | Car Market Place</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(135deg, rgba(6, 10, 11, 0.75) 0%, rgba(8, 16, 21, 0.85) 100%),
+                url('images/bmw.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .container {
+            max-width: 430px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 22px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+            padding: 2.5rem 2rem 2rem 2rem;
+            animation: fadeIn 1s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1.5px solid #eaf3fa;
+            position: relative;
+            z-index: 1;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .dashboard-header {
+            width: 100%;
+            background: linear-gradient(90deg, #2980b9 60%, #6dd5fa 100%);
+            border-radius: 16px 16px 0 0;
+            padding: 1.2rem 0.5rem 1rem 0.5rem;
+            margin: -2.5rem -2rem 1.2rem -2rem;
+            text-align: center;
+            color: #fff;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 8px rgba(41,128,185,0.08);
+        }
+        .divider {
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #e67e22 60%, #f9d423 100%);
+            border-radius: 2px;
+            margin: 0.7rem auto 1.5rem auto;
+        }
+        .dashboard-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            width: 100%;
+        }
+        .dashboard-links a {
+            display: flex;
+            align-items: center;
+            gap: 1.1rem;
+            justify-content: center;
+            background: linear-gradient(90deg, #e67e22 60%, #f9d423 100%);
+            color: #fff;
+            padding: 1.1rem 1rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 1.18rem;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(230,126,34,0.10);
+            transition: background 0.2s, transform 0.12s, box-shadow 0.2s;
+            border: none;
+            outline: none;
+        }
+        .dashboard-links a i {
+            font-size: 1.3em;
+            opacity: 0.92;
+            color: #ffffff !important;
+            background: none !important;
+            -webkit-background-clip: initial !important;
+            -webkit-text-fill-color: initial !important;
+            background-clip: initial !important;
+            text-fill-color: initial !important;
+        }
+        .dashboard-links a:hover, .dashboard-links a:focus {
+            background: linear-gradient(90deg, #ca6b17 60%, #f9d423 100%);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 4px 16px rgba(230,126,34,0.13);
+        }
+        @media (max-width: 600px) {
+            .container { padding: 1.2rem 0.3rem; }
+            .dashboard-header { font-size: 1.3rem; padding: 1rem 0.2rem 0.7rem 0.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-overlay"></div>
+    <div class="container">
+        <div class="dashboard-header">
+            <i class="fa-solid fa-user-circle" style="margin-right:0.5rem; color:#222;"></i>
+            Customer Dashboard
+        </div>
+        <div class="divider"></div>
+        <div class="dashboard-links">
+            <a href="viewcar.html"><i class="fa-solid fa-car"></i>Buy Car</a>
+            <a href="index.html"><i class="fa-solid fa-list"></i>View Available Cars</a>
+            <a href="view_sellers.html"><i class="fa-solid fa-users"></i>View Sellers</a>
+            <a href="login.html"><i class="fa-solid fa-sign-out-alt"></i>Logout</a>
+        </div>
+    </div>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('success')) {
+            let msg = '';
+            switch(params.get('success')) {
+                case 'car_added': msg = 'Car added successfully!'; break;
+                case 'seller_added': msg = 'Seller added successfully!'; break;
+                case 'customer_added': msg = 'Customer added successfully!'; break;
+                case 'booking_added': msg = 'Booking completed successfully!'; break;
+                case 'payment_done': msg = 'Payment successful!'; break;
+                default: msg = 'Operation successful!';
+            }
+            alert(msg);
+        }
+    </script>
+</body>
+</html>

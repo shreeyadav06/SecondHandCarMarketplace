@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Car Market Place</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: linear-gradient(120deg, #2980b9, #6dd5fa, #ffffff);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .login-container {
+            background: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            width: 350px;
+            max-width: 90vw;
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #2980b9;
+        }
+        .login-options {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .login-option-btn {
+            flex: 1;
+            padding: 0.7rem 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: #f4f4f4;
+            color: #2461c6;
+            transition: background 0.2s, color 0.2s;
+        }
+        .login-option-btn.active, .login-option-btn:hover {
+            background: #2461c6;
+            color: #fff;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: #333;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #b2bec3;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border 0.2s, box-shadow 0.2s;
+            background: #f8fafc;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #2980b9;
+            box-shadow: 0 0 0 2px #6dd5fa55;
+            outline: none;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(90deg, #2980b9 60%, #6dd5fa 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(41,128,185,0.10);
+            transition: background 0.2s, transform 0.1s;
+        }
+        .login-btn:hover {
+            background: linear-gradient(90deg, #2574a9 60%, #51c6f7 100%);
+            transform: translateY(-2px) scale(1.02);
+        }
+        .register-link {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: #2980b9;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .register-link:hover {
+            text-decoration: underline;
+        }
+        small {
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+<script>
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('error')) {
+        let msg = '';
+        switch(params.get('error')) {
+            case 'emptyfields': msg = 'Please fill in all fields.'; break;
+            case 'nouser': msg = 'No account found with that username/email and role.'; break;
+            case 'wrongpass': msg = 'Incorrect password or admin code.'; break;
+            case 'invalidrole': msg = 'Invalid role selected.'; break;
+            case 'wrongcode': msg = 'Invalid admin login code.'; break;
+            default: msg = 'Login failed. Please try again.';
+        }
+        alert(msg);
+    }
+    if (params.get('success') === 'registered') {
+        alert('Registration successful! Please login.');
+    }
+</script>
+    <div class="login-container">
+        <h2>Login</h2>
+        <div class="login-options">
+            <button type="button" class="login-option-btn active" id="adminBtn" onclick="showAdminLogin()">Admin</button>
+            <button type="button" class="login-option-btn" id="userBtn" onclick="showUserLogin()">Buyer/Seller</button>
+        </div>
+        <!-- Admin Login Form -->
+        <form action="backend/login.php" method="POST" id="adminLoginForm">
+            <div class="form-group">
+                <label for="admin_username">Username or Email</label>
+                <input type="text" id="admin_username" name="username" required autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label for="admin_password">Password</label>
+                <input 
+                    type="password" 
+                    id="admin_password" 
+                    name="password" 
+                    required 
+                    autocomplete="current-password"
+                >
+            </div>
+            <input type="hidden" name="role" value="admin">
+            <div class="form-group">
+                <label for="admin_code">Admin Login Code</label>
+                <input type="password" id="admin_code" name="admin_code" placeholder="Enter Admin Code">
+                <small>Ask the system owner for the admin code.</small>
+            </div>
+            <button type="submit" class="login-btn">Login as Admin</button>
+        </form>
+        <!-- Buyer/Seller Login Form -->
+        <form action="backend/login.php" method="POST" id="userLoginForm" style="display:none;">
+            <div class="form-group">
+                <label for="user_username">Username or Email</label>
+                <input type="text" id="user_username" name="username" required autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label for="user_password">Password</label>
+                <input 
+                    type="password" 
+                    id="user_password" 
+                    name="password" 
+                    required 
+                    autocomplete="current-password"
+                >
+            </div>
+            <div class="form-group">
+                <label for="user_role">Login as</label>
+                <select id="user_role" name="role" required>
+                    <option value="">Select Role</option>
+                    <option value="seller">Seller</option>
+                    <option value="customer">Buyer</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <button type="submit" class="login-btn">Login as Buyer/Seller</button>
+        </form>
+        <a href="register.html" class="register-link">Don't have an account? Register</a>
+    </div>
+    <script>
+        function showAdminLogin() {
+            document.getElementById('adminLoginForm').style.display = 'block';
+            document.getElementById('userLoginForm').style.display = 'none';
+            document.getElementById('adminBtn').classList.add('active');
+            document.getElementById('userBtn').classList.remove('active');
+        }
+        function showUserLogin() {
+            document.getElementById('adminLoginForm').style.display = 'none';
+            document.getElementById('userLoginForm').style.display = 'block';
+            document.getElementById('adminBtn').classList.remove('active');
+            document.getElementById('userBtn').classList.add('active');
+        }
+    </script>
+<script>
+    // Store username on Buyer/Seller login
+    document.getElementById('userLoginForm').addEventListener('submit', function() {
+        const username = document.getElementById('user_username').value;
+        localStorage.setItem('loggedInUsername', username);
+    });
+</script>
+</body>
+</html>

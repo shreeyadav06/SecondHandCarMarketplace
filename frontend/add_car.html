@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Car | Car Market Place</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(135deg, rgba(6, 10, 11, 0.75) 0%, rgba(8, 16, 21, 0.85) 100%),
+                url('images/bmw.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .form-container {
+            background: rgba(255,255,255,0.97);
+            padding: 2.5rem 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25);
+            width: 370px;
+            max-width: 95vw;
+            animation: fadeIn 1s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #2980b9;
+            letter-spacing: 1px;
+        }
+        form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .form-group {
+            margin-bottom: 1.3rem;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            box-sizing: border-box;
+        }
+        .form-group label {
+            margin-bottom: 0.4rem;
+            color: #333;
+            font-weight: 500;
+            text-align: left;
+            padding-left: 2px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #b2bec3;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #f8fafc;
+            transition: border 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #2980b9;
+            box-shadow: 0 0 0 2px #6dd5fa55;
+            outline: none;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(90deg, #2980b9 60%, #6dd5fa 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(41,128,185,0.10);
+            transition: background 0.2s, transform 0.1s;
+        }
+        .submit-btn:hover {
+            background: linear-gradient(90deg, #2574a9 60%, #51c6f7 100%);
+            transform: translateY(-2px) scale(1.02);
+        }
+        @media (max-width: 500px) {
+            .form-container { padding: 1.2rem 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-overlay"></div>
+    <div class="form-container">
+        <h2>Add Car Details</h2>
+        <form id="addCarForm" action="backend/addcar.php" method="POST" autocomplete="off" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="brand">Brand</label>
+                <input type="text" id="brand" name="brand" required>
+            </div>
+            <div class="form-group">
+                <label for="model">Model</label>
+                <input type="text" id="model" name="model" required>
+            </div>
+            <div class="form-group">
+                <label for="year">Year</label>
+                <input type="number" id="year" name="year" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" id="price" name="price" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="car_type">Car Type</label>
+                <select id="car_type" name="car_type" required>
+                    <option value="">Select Type</option>
+                    <option value="Sedan">Sedan</option>
+                    <option value="SUV">SUV</option>
+                    <option value="Hatchback">Hatchback</option>
+                    <option value="Coupe">Coupe</option>
+                    <option value="Convertible">Convertible</option>
+                    <option value="Pickup">Pickup</option>
+                    <option value="Van">Van</option>
+                    <option value="Wagon">Wagon</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="car_condition">Car Condition</label>
+                <select id="car_condition" name="car_condition" required>
+                    <option value="New">New</option>
+                    <option value="Used">Used</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="mileage">Mileage (km)</label>
+                <input type="number" id="mileage" name="mileage" required>
+            </div>
+            <div class="form-group">
+                <label for="horsepower">Horsepower (hp)</label>
+                <input type="number" id="horsepower" name="horsepower">
+            </div>
+            <div class="form-group">
+                <label for="transmission">Transmission</label>
+                <select id="transmission" name="transmission" required>
+                    <option value="Manual">Manual</option>
+                    <option value="Automatic">Automatic</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="car_image">Car Image</label>
+                <input type="file" id="car_image" name="car_image" accept="image/*" required>
+            </div>
+            <div class="form-group">
+                <label for="seller_id">Seller ID</label>
+                <input type="number" id="seller_id" name="seller_id" required>
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status" required>
+                    <option value="Available">Available</option>
+                    <option value="Sold">Sold</option>
+                    <option value="Reserved">Reserved</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">Add Car</button>
+        </form>
+    </div>
+    <script>
+        // Show success message if redirected with ?success
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('success')) {
+            let msg = '';
+            switch(params.get('success')) {
+                case 'car_added': msg = 'Car added successfully!'; break;
+                default: msg = 'Operation successful!';
+            }
+            alert(msg);
+        }
+
+        // Redirect to add_maintenance.html after successful car addition
+        document.getElementById('addCarForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = this;
+            const formData = new FormData(form);
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.car_id) {
+                    window.location.href = 'add_maintenance.html?car_id=' + data.car_id;
+                } else {
+                    alert(data.message || 'Car added, but could not redirect.');
+                }
+            })
+            .catch(() => {
+                alert('Error adding car.');
+            });
+        });
+    </script>
+</body>
+</html>

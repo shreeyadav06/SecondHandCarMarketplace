@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SecondGear | Drive Your Dream Today!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900|Segoe+UI:400,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #222;
+        }
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem 3vw;
+            background: rgba(255,255,255,0.95);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #222;
+            letter-spacing: 2px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2.2rem;
+            font-size: 1.08rem;
+        }
+        .nav-links a {
+            color: #222;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: #2980b9;
+        }
+        .nav-actions {
+            display: flex;
+            gap: 1.2rem;
+        }
+        .explore-btn {
+            background: #2461c6;
+            color: #fff;
+            border: none;
+            border-radius: 2rem;
+            padding: 0.7rem 1.7rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .explore-btn:hover {
+            background: #174a8c;
+        }
+        .edit-btn {
+            background: #5f5fff;
+            color: #fff;
+            border: none;
+            border-radius: 0.7rem;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.98rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+        .hero {
+            position: relative;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            transition: background-image 1s ease-in-out, background 1s ease-in-out;
+        }
+        .hero.fade-bg {}
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: #fff;
+            max-width: 650px;
+            margin-left: 5vw;
+            transition: none !important;
+        }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(34,34,34,0.7) 30%, rgba(34,34,34,0.1) 100%);
+        }
+        .hero-title {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 1.2rem;
+            line-height: 1.1;
+        }
+        .hero-desc {
+            font-size: 1.18rem;
+            margin-bottom: 2.2rem;
+            color: #f3f3f3;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1.2rem;
+        }
+        .hero-btn {
+            padding: 0.8rem 2rem;
+            border-radius: 2rem;
+            font-size: 1.18rem;
+            font-weight: 700;
+            border: 2.5px solid #fff;
+            background: transparent;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            box-shadow: none;
+            outline: none;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .hero-btn:hover {
+            background: #fff;
+            color: #2461c6;
+        }
+        @media (max-width: 900px) {
+            .hero-content { margin-left: 2vw; }
+            .hero-title { font-size: 2rem; }
+        }
+        @media (max-width: 600px) {
+            .navbar { flex-direction: column; gap: 0.7rem; }
+            .nav-links { gap: 1rem; }
+            .hero { min-height: 60vh; }
+            .hero-content { margin-left: 0; padding: 2rem 1rem; }
+            .hero-buttons { flex-direction: column; gap: 0.7rem; }
+        }
+        .featured-section {
+            background: #111;
+            padding: 3rem 0 2.5rem 0;
+        }
+        .featured-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            margin: 0 auto 2.5rem auto;
+            padding: 0 2vw;
+            gap: 2rem;
+        }
+        .featured-title {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 2.7rem;
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.1;
+            max-width: 600px;
+        }
+        .featured-title em {
+            font-style: italic;
+            font-family: inherit;
+        }
+        .featured-desc {
+            color: #eaeaea;
+            font-size: 1.25rem;
+            max-width: 500px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .featured-cars {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2vw;
+        }
+        .car-card {
+            background: #181818;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+            width: 340px;
+            min-height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.18s;
+            border: 1.5px dashed #888;
+            position: relative;
+        }
+        .car-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 1.5rem;
+            display: block;
+        }
+        .car-card:hover {
+            transform: translateY(-6px) scale(1.03);
+            border-color: #2461c6;
+        }
+        @media (max-width: 1100px) {
+            .featured-header { flex-direction: column; align-items: flex-start; }
+            .featured-cars { flex-direction: column; align-items: center; }
+        }
+        @media (max-width: 600px) {
+            .featured-title { font-size: 1.5rem; }
+            .featured-desc { font-size: 1rem; }
+            .car-card { width: 95vw; min-width: unset; }
+            .car-card img { height: 160px; }
+        }
+        .why-choose-section {
+            background: #fff;
+            padding: 3rem 0 2.5rem 0;
+        }
+        /* ...rest of your why-choose-section styles... */
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">SecondGear</div>
+        <div class="nav-links">
+            <a href="#about">About Us</a>
+            <a href="#services">Services</a>
+            <a href="viewcar.html">View Listings</a>
+            <!-- Removed Add Car from navbar -->
+            <a href="add_seller.html">Add Seller</a>
+            <a href="customer_dashboard.html">Buy Car</a>
+            <!-- <a href="admin_dashboard.html" id="admin-dashboard-link" style="display:none;">Admin Dashboard</a> -->
+        </div>
+        <div class="nav-actions">
+            <a href="login.html" class="nav-btn" style="margin-left:0.8rem; text-decoration:none; color:#fff; background:#2461c6; border-radius:1.2rem; padding:0.5rem 1.3rem; font-weight:600;">Login</a>
+            <a href="register.html" class="nav-btn" style="margin-left:0.8rem; text-decoration:none; color:#fff; background:#2461c6; border-radius:1.2rem; padding:0.5rem 1.3rem; font-weight:600;">Register</a>
+        </div>
+    </div>
+    <div class="hero" id="hero-slideshow">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-title">
+                SecondGear : Drive Your <br> Dream Today!
+            </div>
+            <div class="hero-desc">
+                At SecondGear, we simplify the process of buying and selling pre-owned vehicles. Our platform offers a seamless, trustworthy experience, connecting buyers and sellers with ease. Discover quality and reliability with every transaction.
+            </div>
+            <div class="hero-buttons">
+                <button class="hero-btn" onclick="window.location.href='viewcar.html'">View Listings</button>
+                <!-- Removed Add Car button from hero section -->
+                <button class="hero-btn" onclick="window.location.href='add_seller.html'">Add Seller</button>
+                <button class="hero-btn" onclick="window.location.href='customer_dashboard.html'">Buy Car</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Vehicles Section -->
+    <section class="featured-section">
+        <div class="featured-header">
+            <div class="featured-title">
+                Explore Our Hand-Picked<br>
+                Selection of <em>Featured Vehicles</em> Today
+            </div>
+            <div class="featured-desc">
+                Discover our curated collection of top-rated pre-owned vehicles, carefully selected for their quality, reliability, and exceptional value. At SecondGear, we make it easy to find the perfect car that fits your needs and budget. Browse our featured listings and drive away with confidence.
+            </div>
+        </div>
+        <div class="featured-cars">
+            <div class="car-card">
+                <img src="images/tata.jpg" alt="BMW" />
+            </div>
+            <div class="car-card">
+                <img src="images/2004-Porsche-Carrera-GT-001-2160.jpg" alt="Land Rover Defender" />
+            </div>
+            <div class="car-card">
+                <img src="images/swift.jpg" alt="Mini Cooper" />
+            </div>
+        </div>
+    </section>
+    <!-- Why Choose Us Section -->
+    <section class="why-choose-section" style="background:#fff; padding:3rem 0 2.5rem 0;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; max-width: 1400px; margin: 0 auto; gap: 2.5rem; flex-wrap: wrap; padding: 0 2vw;">
+            <div style="flex:1; min-width:220px; max-width:340px; display:flex; flex-direction:column; align-items:center;">
+                <img src="images/1.jpg" alt="Wide Selection of Vehicles" style="width:100%; height:220px; object-fit:cover; border-radius:1.5rem; margin-bottom:1.2rem;">
+                <div style="font-size:2rem; font-weight:700; margin-bottom:0.5rem; text-align:center;">Wide Selection of Vehicles</div>
+                <div style="font-size:1.15rem; text-align:center; color:#222; font-weight:400;">
+                    Browse a diverse range of pre-owned vehicles. Find detailed listings and transparent pricing, making your car search easier than ever.
+                </div>
+            </div>
+            <div style="flex:1; min-width:220px; max-width:340px; display:flex; flex-direction:column; align-items:center;">
+                <img src="images/2.jpg" alt="Dedicated Seller Support" style="width:100%; height:220px; object-fit:cover; border-radius:1.5rem; margin-bottom:1.2rem;">
+                <div style="font-size:2rem; font-weight:700; margin-bottom:0.5rem; text-align:center;">Dedicated Seller Support</div>
+                <div style="font-size:1.15rem; text-align:center; color:#222; font-weight:400;">
+                    Get comprehensive support for listing your vehicles. Our platform guides you through the process, reaching potential buyers with ease.
+                </div>
+            </div>
+            <div style="flex:1; min-width:220px; max-width:340px; display:flex; flex-direction:column; align-items:center;">
+                <img src="images/3.jpg" alt="Secure Transactions" style="width:100%; height:220px; object-fit:cover; border-radius:1.5rem; margin-bottom:1.2rem;">
+                <div style="font-size:2rem; font-weight:700; margin-bottom:0.5rem; text-align:center;">Secure Transactions</div>
+                <div style="font-size:1.15rem; text-align:center; color:#222; font-weight:400;">
+                    Enjoy secure and trustworthy transactions. Our platform ensures a safe environment for both buyers and sellers, providing peace of mind.
+                </div>
+            </div>
+            <div style="flex:1; min-width:220px; max-width:340px; display:flex; flex-direction:column; align-items:center;">
+                <img src="images/4.jpg" alt="Easy Vehicle Search" style="width:100%; height:220px; object-fit:cover; border-radius:1.5rem; margin-bottom:1.2rem;">
+                <div style="font-size:2rem; font-weight:700; margin-bottom:0.5rem; text-align:center;">Easy Vehicle Search</div>
+                <div style="font-size:1.15rem; text-align:center; color:#222; font-weight:400;">
+                    Easily find the perfect car with our user-friendly search. Filter by make, model, price, and more to quickly locate your ideal vehicle.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section (at end) -->
+    <section id="about" style="background:#fff; padding:3rem 0 2rem 0;">
+        <div style="max-width:900px; margin:0 auto; text-align:center;">
+            <h2 style="color:#2461c6; font-size:2.3rem; margin-bottom:1rem;">About Us</h2>
+            <p style="font-size:1.18rem; color:#222; line-height:1.7;">
+                <b>SecondGear</b> is your trusted marketplace for buying and selling pre-owned vehicles. 
+                We are committed to providing a seamless, transparent, and secure experience for both buyers and sellers. 
+                Our platform features a wide selection of quality cars, expert support, and a user-friendly interface to help you drive your dream today!
+            </p>
+        </div>
+    </section>
+
+    <!-- Services Section (at end, images removed) -->
+    <section id="services" style="background:#f8fafc; padding:3rem 0 2rem 0;">
+        <div style="max-width:1100px; margin:0 auto;">
+            <h2 style="color:#2461c6; font-size:2.3rem; text-align:center; margin-bottom:2rem;">Our Services</h2>
+            <div style="display:flex; flex-wrap:wrap; gap:2.5rem; justify-content:center;">
+                <div style="flex:1; min-width:240px; max-width:340px; background:#fff; border-radius:1.5rem; box-shadow:0 2px 12px rgba(41,128,185,0.08); padding:2rem 1.2rem; text-align:center;">
+                    <div style="font-size:1.3rem; font-weight:700; margin-bottom:0.5rem;">Buy Cars</div>
+                    <div style="font-size:1.05rem; color:#222;">
+                        Browse a wide range of verified pre-owned vehicles, compare prices, and find the perfect car for your needs and budget.
+                    </div>
+                </div>
+                <div style="flex:1; min-width:240px; max-width:340px; background:#fff; border-radius:1.5rem; box-shadow:0 2px 12px rgba(41,128,185,0.08); padding:2rem 1.2rem; text-align:center;">
+                    <div style="font-size:1.3rem; font-weight:700; margin-bottom:0.5rem;">Sell Cars</div>
+                    <div style="font-size:1.05rem; color:#222;">
+                        List your car easily and reach thousands of potential buyers. Get expert support and secure transactions every step of the way.
+                    </div>
+                </div>
+                <div style="flex:1; min-width:240px; max-width:340px; background:#fff; border-radius:1.5rem; box-shadow:0 2px 12px rgba(41,128,185,0.08); padding:2rem 1.2rem; text-align:center;">
+                    <div style="font-size:1.3rem; font-weight:700; margin-bottom:0.5rem;">Customer Support</div>
+                    <div style="font-size:1.05rem; color:#222;">
+                        Our dedicated team is here to help you with any questions, from browsing to buying or selling, ensuring a smooth experience.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Email Section (added before copyright and logout) -->
+    <section style="background:#fff; padding:2rem 0 1rem 0;">
+        <div style="max-width:700px; margin:0 auto; text-align:center;">
+            <div style="font-size:2.5rem; color:#b5853b; margin-bottom:0.5rem;">
+                <!-- Email icon (SVG) -->
+                <svg width="40" height="40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8" fill="none"/><path d="M8 13a3 3 0 0 1 3-3h18a3 3 0 0 1 3 3v14a3 3 0 0 1-3 3H11a3 3 0 0 1-3-3V13Zm3-.5a.5.5 0 0 0-.5.5v.217l9.5 7.125 9.5-7.125V13a.5.5 0 0 0-.5-.5H11Zm18.5 2.783-8.93 6.703a1 1 0 0 1-1.14 0L9.5 15.283V27a.5.5 0 0 0 .5.5h18a.5.5 0 0 0 .5-.5V15.283Z" fill="#b5853b"/></svg>
+            </div>
+            <div style="font-size:2rem; font-weight:700; margin-bottom:0.5rem;">Email Us</div>
+            <div style="font-size:1.08rem; color:#222; margin-bottom:0.5rem;">
+                For any inquiries or support, feel free to reach out to us via email at
+                <a href="mailto:contact@secondgear.com" style="color:#2461c6; text-decoration:underline;">contact@secondgear.com</a>.
+                We aim to respond within 24 hours.
+            </div>
+        </div>
+    </section>
+
+    <!-- Copyright Section (added before logout button) -->
+    <div style="width:100%; text-align:center; color:#888; font-size:1rem; margin:1.5rem 0 0.5rem 0;">
+        &copy; 2025 SecondGear. All rights reserved.
+    </div>
+
+    <!-- Logout button at the bottom of the page -->
+    <div style="width:100%; display:flex; justify-content:center; margin:2.5rem 0 1.5rem 0;">
+        <a href="login.html" style="background:#e74c3c; color:#fff; padding:0.8rem 2.2rem; border-radius:2rem; font-size:1.15rem; font-weight:600; text-decoration:none; box-shadow:0 2px 8px rgba(231,76,60,0.10); transition:background 0.2s;">Logout</a>
+    </div>
+    <script>
+        // Slideshow images array (use relative paths)
+        const heroImages = [
+            'images/bmw.jpg',
+            'images/Porsche.jpg',
+            'images/P2.jpg',
+            'images/bmw1.jpeg'
+        ];
+        let currentHero = 0;
+        const heroDiv = document.getElementById('hero-slideshow');
+
+        function setHeroBg(idx) {
+            heroDiv.classList.add('fade-bg');
+            setTimeout(() => {
+                heroDiv.style.background = `url('${heroImages[idx]}') center/cover no-repeat`;
+                heroDiv.classList.remove('fade-bg');
+            }, 700);
+        }
+        // Initialize
+        heroDiv.style.background = `url('${heroImages[0]}') center/cover no-repeat`;
+
+        setInterval(() => {
+            currentHero = (currentHero + 1) % heroImages.length;
+            setHeroBg(currentHero);
+        }, 4000);
+
+
+        // Set admin role in localStorage if just logged in as admin
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('success') === 'admin') {
+            localStorage.setItem('role', 'admin');
+            // Optionally, remove the query param from the URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
+</body>
+</html>

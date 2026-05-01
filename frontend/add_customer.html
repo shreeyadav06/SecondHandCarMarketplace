@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Customer | Car Market Place</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(135deg, rgba(6, 10, 11, 0.75) 0%, rgba(8, 16, 21, 0.85) 100%),
+                url('images/bmw.jpg') no-repeat center center fixed;
+            background-size: cover;
+            
+        }
+        .form-container {
+            background: rgba(255,255,255,0.97);
+            padding: 2.5rem 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25);
+            width: 370px;
+            max-width: 95vw;
+            animation: fadeIn 1s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #2980b9;
+            letter-spacing: 1px;
+        }
+        form {
+            width: 100%;
+        }
+        .form-group {
+            margin-bottom: 1.3rem;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .form-group label {
+            margin-bottom: 0.4rem;
+            color: #333;
+            font-weight: 500;
+            text-align: left;
+            padding-left: 2px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #b2bec3;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #f8fafc;
+            transition: border 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+        .form-group input:focus {
+            border-color: #2980b9;
+            box-shadow: 0 0 0 2px #6dd5fa55;
+            outline: none;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(90deg, #2980b9 60%, #6dd5fa 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(41,128,185,0.10);
+            transition: background 0.2s, transform 0.1s;
+        }
+        .submit-btn:hover {
+            background: linear-gradient(90deg, #2574a9 60%, #51c6f7 100%);
+            transform: translateY(-2px) scale(1.02);
+        }
+        @media (max-width: 500px) {
+            .form-container { padding: 1.2rem 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-overlay"></div>
+    <div class="form-container">
+        <h2>Add Customer Details</h2>
+        <form action="backend/add_customer.php" method="POST" autocomplete="off">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="contact">Contact</label>
+                <input type="text" id="contact" name="contact" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <button type="submit" class="submit-btn">Add Customer</button>
+        </form>
+    </div>
+    <script>
+        // Show success messages from URL params
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('success')) {
+            let msg = '';
+            switch(params.get('success')) {
+                case 'customer_added': msg = 'Customer added successfully!'; break;
+                default: msg = 'Operation successful!';
+            }
+            alert(msg);
+        }
+    </script>
+</body>
+</html>
